@@ -1,3 +1,4 @@
+// Demo DB for coursework
 // Simple demo "DB" module (in-memory)
 const DB={users:[]};
 function connect(url){ console.log("Connecting to", url||"memory"); return true; }
