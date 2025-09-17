@@ -15,3 +15,5 @@ function simulate(){
 if (require.main === module) simulate();
 
 module.exports={getUsers,getUser,postUser};
+
+// EOF
