@@ -30,3 +30,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}   # <— important
           publish_dir: ./build                        # adjust if different
           # publish_branch: gh-pages                  # optional: default is gh-pages
+
+permissions:
+  contents: write
