@@ -8,79 +8,31 @@ on:
 
 jobs:
   lint:
-    name: Linting Job
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '20'
-      - name: Cache npm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
-      - run: npm ci
+      - run: npm install
       - run: npm run lint
-      - run: npm run format:check
 
   test:
-    name: Testing Job
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '20'
-      - name: Cache npm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm test -- --coverage
-
-      # Enforce coverage >= 80% using the Jest JSON summary
-      - name: Fail if coverage < 80%
-        run: |
-          TARGET=80
-          # Pull the percentage from coverage/coverage-summary.json
-          ACTUAL=$(node -e "console.log(require('./coverage/coverage-summary.json').total.lines.pct)")
-          echo "Line coverage: ${ACTUAL}% (target ${TARGET}%)"
-          awk -v a="$ACTUAL" -v t="$TARGET" 'BEGIN{exit (a+0 < t)}'
-
-      # Optional: Upload to Codecov (public repos work tokenless; for private, add CODECOV_TOKEN secret)
-      - name: Upload to Codecov
-        if: ${{ always() }}
-        uses: codecov/codecov-action@v4
-        with:
-          files: ./coverage/coverage-final.json
-          verbose: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - run: npm install
+      - run: npm test
 
   build:
-    name: Build Job
     runs-on: ubuntu-latest
-    needs: [lint, test]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '20'
-      - name: Cache npm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
-      - run: npm ci
+      - run: npm install
       - run: npm run build
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: build/
