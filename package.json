@@ -1,0 +1,24 @@
+{
+  "name": "csp451-checkpoint2-gazimazdi",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "lint": "eslint . --ext .js",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write .",
+    "test": "jest --coverage--coverageReporters=\"json-summary\" --coverageReporters=\"text\"",
+    "build": "mkdir -p build && cp -r src build/"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "jest": "^30.1.3",
+    "prettier": "^3.6.2"
+  }
+}
