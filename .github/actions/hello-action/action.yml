@@ -1,0 +1,5 @@
+name: "Hello Action"
+description: "A simple custom action"
+runs:
+  using: "node16"
+  main: "index.js"
